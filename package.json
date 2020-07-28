@@ -1,0 +1,20 @@
+{
+  "name": "qvrelease-bot",
+  "private": true,
+  "dependencies": {
+    "@octokit/rest": "^18.0.3",
+    "dayjs": "^1.8.30",
+    "outdent": "^0.7.1",
+    "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "@sindresorhus/tsconfig": "^0.7.0",
+    "@types/node": "^14.0.23",
+    "@vercel/node": "^1.7.2",
+    "typescript": "^3.9.7"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  }
+}

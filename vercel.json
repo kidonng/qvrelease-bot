@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "env": {
+    "BOT_TOKEN": "@qvrelease_bot_bot_token",
+    "GH_TOKEN": "@qvrelease_bot_gh_token",
+    "IS_VERCEL": "1"
+  },
+  "github": {
+    "enabled": false
+  }
+}

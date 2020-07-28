@@ -1,0 +1,10 @@
+{
+  "extends": "@sindresorhus/tsconfig",
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2019"],
+    "noImplicitReturns": false,
+    "esModuleInterop": true
+  },
+  "include": ["src"]
+}
