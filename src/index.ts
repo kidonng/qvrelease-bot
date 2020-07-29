@@ -1,6 +1,6 @@
 import Telegraf from 'telegraf'
 import { release } from './release'
-import { IContext } from './utils'
+import { IContext, request } from './utils'
 
 const { BOT_TOKEN, IS_VERCEL } = process.env
 
@@ -11,18 +11,11 @@ export const telegraf = new Telegraf<IContext>(BOT_TOKEN)
 
 release(telegraf)
 
-telegraf.on('message', async (ctx) => {
+telegraf.on('message', ({ telegram }) => {
   // Workaround for skipping unhandled messages
   // https://github.com/telegraf/telegraf/issues/1089
-  const { telegram } = ctx
   if (telegram.webhookReply) {
-    const { url } = await telegram.getWebhookInfo()
-    if (url) {
-      if (await telegram.deleteWebhook()) {
-        await telegraf.handleUpdates(await telegram.getUpdates())
-        return telegram.setWebhook(url)
-      }
-    }
+    request.handler!.status(200).end()
   }
 })
 
