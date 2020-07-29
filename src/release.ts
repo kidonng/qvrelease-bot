@@ -38,7 +38,7 @@ export const release: Component = (telegraf) => {
     })
 
     const asset = assets.find((asset) =>
-      asset.browser_download_url.includes(platforms[platform as Platform])
+      asset.browser_download_url.includes(platforms[platform as Platform]!)
     )
 
     if (!asset) return reply('最新版本中没有相应文件！', extra)

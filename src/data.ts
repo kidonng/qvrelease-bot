@@ -1,36 +1,80 @@
 export const platforms = {
-  w32e: 'Windows 32 位安装包',
-  w64e: 'Windows 64 位安装包',
-  w32z: 'Windows 32 位压缩包',
-  w64z: 'Windows 64 位压缩包',
+  w32i: 'Windows 32 位安装包',
+  w64i: 'Windows 64 位安装包',
+  w32: 'Windows 32 位',
+  w64: 'Windows 64 位',
   mac: 'macOS',
   macl: 'macOS 旧版',
-  app: 'AppImage',
+  linux: 'Linux',
   deb: 'Debian',
 }
 
 export type Platform = keyof typeof platforms
+type Platforms = Partial<Record<Platform, string>>
+
+const windows: Platforms = {
+  w32: 'Windows-x86',
+  w64: 'Windows-x64',
+}
+const linux: Platforms = {
+  linux: 'linux',
+}
+const macos: Platforms = {
+  mac: 'macOS',
+}
+const common: Platforms = {
+  ...windows,
+  ...linux,
+  ...macos,
+}
 
 export const apps: Record<
   string,
   {
     name: string
     repo: string
-    platforms: Record<Platform, string>
+    platforms: Platforms
   }
 > = {
-  main: {
+  qv: {
     name: 'Qv2ray',
     repo: 'Qv2ray',
     platforms: {
-      w32e: 'win32.exe',
-      w64e: 'win64.exe',
-      w32z: 'Windows-x86.7z',
-      w64z: 'Windows-x64.7z',
-      mac: 'macOS',
+      ...common,
+      w32i: 'win32',
+      w64i: 'win64',
       macl: 'legacy',
-      app: 'AppImage',
       deb: 'deb',
     },
+  },
+  com: {
+    name: 'Command 插件',
+    repo: 'QvPlugin-Command',
+    platforms: common,
+  },
+  ss: {
+    name: 'SS 插件',
+    repo: 'QvPlugin-SS',
+    platforms: common,
+  },
+  ssr: {
+    name: 'SSR 插件',
+    repo: 'QvPlugin-SSR',
+    platforms: common,
+  },
+  tro: {
+    name: 'Trojan 插件',
+    repo: 'QvPlugin-Trojan',
+    platforms: common,
+  },
+  trogo: {
+    name: 'Trojan-Go 插件',
+    repo: 'QvPlugin-Trojan-Go',
+    platforms: common,
+  },
+  naive: {
+    name: 'NaiveProxy 插件',
+    repo: 'QvPlugin-NaiveProxy',
+    platforms: common,
   },
 }
