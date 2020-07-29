@@ -17,9 +17,12 @@ telegraf.on('message', async (ctx) => {
   const { telegram } = ctx
   if (telegram.webhookReply) {
     const { url } = await telegram.getWebhookInfo()
-    await telegram.deleteWebhook()
-    await telegram.getUpdates()
-    return telegram.setWebhook(url)
+    if (url) {
+      if (await telegram.deleteWebhook()) {
+        await telegraf.handleUpdates(await telegram.getUpdates())
+        return telegram.setWebhook(url)
+      }
+    }
   }
 })
 
