@@ -26,14 +26,14 @@ export const release: Component = (telegraf) => {
     if (app === 'help') return help(ctx)
 
     if (!(app in apps)) return reply(`没有找到应用 ${app}！`, extra)
-    const { name, repo, platforms } = apps[app]
+    const { name, owner, repo, platforms } = apps[app]
     if (!(platform in platforms))
       return reply(`没有找到平台 ${platform}！`, extra)
 
     const {
       data: { assets, tag_name, published_at },
     } = await getLatestRelease({
-      owner: 'Qv2ray',
+      owner,
       repo,
     })
 
