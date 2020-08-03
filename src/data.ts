@@ -122,4 +122,14 @@ export const apps: Record<
       mac: 'macos',
     },
   },
+  vless: {
+    name: 'V2Ray VLESS 核心',
+    owner: 'rprx',
+    repo: 'v2ray-vless',
+    platforms: {
+      w64: 'windows-64',
+      linux: 'linux-64',
+      mac: 'macos-64',
+    },
+  },
 }
