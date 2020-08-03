@@ -5,7 +5,7 @@ export const platforms = {
   w64: 'Windows 64 位',
   mac: 'macOS',
   macl: 'macOS 旧版',
-  linux: 'Linux',
+  linux: 'Linux 64 位',
   deb: 'Debian',
 }
 
@@ -36,6 +36,7 @@ export const apps: Record<
     name: string
     owner: string
     repo: string
+    prerelease?: boolean
     platforms: Platforms
   }
 > = {
@@ -47,8 +48,8 @@ export const apps: Record<
       ...common,
       w32i: 'win32',
       w64i: 'win64',
-      macl: 'legacy',
       deb: 'deb',
+      macl: 'legacy',
     },
   },
   com: {
@@ -81,11 +82,34 @@ export const apps: Record<
     repo: 'QvPlugin-Trojan-Go',
     platforms: common,
   },
+  trogocore: {
+    name: 'Trojan-Go 核心',
+    owner: 'p4gefau1t',
+    repo: 'trojan-go',
+    prerelease: true,
+    platforms: {
+      w32: 'windows-386',
+      w64: 'windows-amd64',
+      linux: 'linux-amd64',
+      mac: 'darwin',
+    },
+  },
   naive: {
     name: 'NaiveProxy 插件',
     owner,
     repo: 'QvPlugin-NaiveProxy',
     platforms: common,
+  },
+  naivecore: {
+    name: 'NaiveProxy 核心',
+    owner: 'klzgrad',
+    repo: 'naiveproxy',
+    platforms: {
+      w32: 'win-x86',
+      w64: 'win-x64',
+      linux: 'linux-x64',
+      mac: 'osx',
+    },
   },
   core: {
     name: 'V2Ray 核心',
@@ -94,8 +118,8 @@ export const apps: Record<
     platforms: {
       w32: 'windows-32',
       w64: 'windows-64',
-      mac: 'macos',
       linux: 'linux-64',
+      mac: 'macos',
     },
   },
 }

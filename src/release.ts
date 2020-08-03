@@ -11,8 +11,37 @@ dayjs.extend(utc)
 const { GH_TOKEN } = process.env
 
 const {
-  repos: { getLatestRelease },
+  repos: { getLatestRelease, listReleases },
 } = new Octokit({ auth: GH_TOKEN })
+
+const latestRelease = async ({
+  owner,
+  repo,
+  prerelease,
+}: {
+  owner: string
+  repo: string
+  prerelease?: boolean
+}) => {
+  if (prerelease) {
+    const {
+      data: [data],
+    } = await listReleases({
+      owner,
+      repo,
+      per_page: 1,
+    })
+
+    return data
+  }
+
+  const { data } = await getLatestRelease({
+    owner,
+    repo,
+  })
+
+  return data
+}
 
 export const release: Component = (telegraf) => {
   telegraf.hears(/\/qv (\w+)(?: (\w+))?/, async (ctx) => {
@@ -26,15 +55,14 @@ export const release: Component = (telegraf) => {
     if (app === 'help') return help(ctx)
 
     if (!(app in apps)) return reply(`没有找到应用 ${app}！`, extra)
-    const { name, owner, repo, platforms } = apps[app]
+    const { name, owner, repo, prerelease, platforms } = apps[app]
     if (!(platform in platforms))
       return reply(`没有找到平台 ${platform}！`, extra)
 
-    const {
-      data: { assets, tag_name, published_at },
-    } = await getLatestRelease({
+    const { assets, tag_name, published_at } = await latestRelease({
       owner,
       repo,
+      prerelease,
     })
 
     const asset = assets.find((asset) =>
