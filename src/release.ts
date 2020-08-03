@@ -71,6 +71,9 @@ export const release: Component = (telegraf) => {
 
     if (!asset) return reply('最新版本中没有相应文件！', extra)
 
+    const github = asset.browser_download_url.replace(/_/g, '\\_')
+    const fastgit = github.replace('github.com', 'hub.fastgit.org')
+
     replyWithMarkdownV2(
       escape(outdent`
           *${name} ${tag_name}* (${_platforms[platform as Platform]}) \`${dayjs(
@@ -78,7 +81,8 @@ export const release: Component = (telegraf) => {
       )
         .utcOffset(8)
         .format('YYYY-MM-DD HH:mm')}\`
-          ${asset.browser_download_url.replace(/_/g, '\\_')}
+          - [GitHub](${github})
+          - [FastGit](${fastgit})
         `),
       extra
     )
