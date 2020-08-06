@@ -44,6 +44,7 @@ export const apps: Record<
     name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
+    prerelease: true,
     platforms: {
       ...common,
       w32i: 'win32',
@@ -62,6 +63,7 @@ export const apps: Record<
     name: 'SS 插件',
     owner,
     repo: 'QvPlugin-SS',
+    prerelease: true,
     platforms: common,
   },
   ssr: {
