@@ -81,8 +81,8 @@ export const release: Component = (telegraf) => {
       )
         .utcOffset(8)
         .format('YYYY-MM-DD HH:mm')}\`
-          - [GitHub](${github})
-          - [FastGit](${fastgit})
+          · [GitHub](${github})
+          · [FastGit](${fastgit})
         `),
       extra
     )
