@@ -44,7 +44,7 @@ const latestRelease = async ({
 }
 
 export const release: Component = (telegraf) => {
-  telegraf.hears(/\/qv (\w+)(?: (\w+))?/, async (ctx) => {
+  telegraf.hears(/\/qv(?:@Qvreleasebot)?(?: (\w+) (\w+))?/, async (ctx) => {
     const { match, reply, replyWithMarkdownV2, message } = ctx
     const extra = {
       reply_to_message_id: message!.message_id,
@@ -52,7 +52,7 @@ export const release: Component = (telegraf) => {
 
     const [, app, platform] = match!
 
-    if (app === 'help') return help(ctx)
+    if (!app) return help(ctx)
 
     if (!(app in apps)) return reply(`没有找到应用 ${app}！`, extra)
     const { name, owner, repo, prerelease, platforms } = apps[app]
