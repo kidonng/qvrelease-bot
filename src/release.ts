@@ -44,7 +44,7 @@ const latestRelease = async ({
 }
 
 export const release: Component = (telegraf) => {
-  telegraf.hears(/\/qv(?:@Qvreleasebot)?(?: (\w+) (\w+))?/, async (ctx) => {
+  telegraf.hears(/^\/qv(?:@Qvreleasebot)?(?: (\w+) (\w+))?$/, async (ctx) => {
     const { match, reply, replyWithMarkdownV2, message } = ctx
     const extra = {
       reply_to_message_id: message!.message_id,
