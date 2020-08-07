@@ -52,7 +52,7 @@ export const release: Component = (telegraf) => {
 
     const [, app, platform] = match!
 
-    if (!app) return help(ctx)
+    if (!app) return replyWithMarkdownV2(help, extra)
 
     if (!(app in apps)) return reply(`没有找到应用 ${app}！`, extra)
     const { name, owner, repo, prerelease, platforms } = apps[app]
