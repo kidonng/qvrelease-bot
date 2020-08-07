@@ -1,8 +1,8 @@
 export const platforms = {
-  w32i: 'Windows 32 位安装包',
-  w64i: 'Windows 64 位安装包',
-  w32: 'Windows 32 位',
-  w64: 'Windows 64 位',
+  win32i: 'Windows 32 位安装包',
+  win64i: 'Windows 64 位安装包',
+  win32: 'Windows 32 位',
+  win64: 'Windows 64 位',
   mac: 'macOS',
   macl: 'macOS 旧版',
   linux: 'Linux 64 位',
@@ -13,8 +13,8 @@ export type Platform = keyof typeof platforms
 type Platforms = Partial<Record<Platform, string>>
 
 const windows: Platforms = {
-  w32: 'Windows-x86',
-  w64: 'Windows-x64',
+  win32: 'Windows-x86',
+  win64: 'Windows-x64',
 }
 const linux: Platforms = {
   linux: 'linux',
@@ -47,8 +47,8 @@ export const apps: Record<
     prerelease: true,
     platforms: {
       ...common,
-      w32i: 'win32',
-      w64i: 'win64',
+      win32i: 'win32',
+      win64i: 'win64',
       deb: 'deb',
       macl: 'legacy',
     },
@@ -90,8 +90,8 @@ export const apps: Record<
     repo: 'trojan-go',
     prerelease: true,
     platforms: {
-      w32: 'windows-386',
-      w64: 'windows-amd64',
+      win32: 'windows-386',
+      win64: 'windows-amd64',
       linux: 'linux-amd64',
       mac: 'darwin',
     },
@@ -107,8 +107,8 @@ export const apps: Record<
     owner: 'klzgrad',
     repo: 'naiveproxy',
     platforms: {
-      w32: 'win-x86',
-      w64: 'win-x64',
+      win32: 'win-x86',
+      win64: 'win-x64',
       linux: 'linux-x64',
       mac: 'osx',
     },
@@ -118,8 +118,8 @@ export const apps: Record<
     owner: 'v2fly',
     repo: 'v2ray-core',
     platforms: {
-      w32: 'windows-32',
-      w64: 'windows-64',
+      win32: 'windows-32',
+      win64: 'windows-64',
       linux: 'linux-64',
       mac: 'macos',
     },
@@ -129,7 +129,7 @@ export const apps: Record<
     owner: 'rprx',
     repo: 'v2ray-vless',
     platforms: {
-      w64: 'windows-64',
+      win64: 'windows-64',
       linux: 'linux-64',
       mac: 'macos-64',
     },
