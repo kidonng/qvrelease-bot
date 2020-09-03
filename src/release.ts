@@ -72,7 +72,7 @@ export const release: Component = (telegraf) => {
     if (!asset) return reply('最新版本中没有相应文件！', extra)
 
     const github = asset.browser_download_url.replace(/_/g, '\\_')
-    const fastgit = github.replace('github.com', 'hub.fastgit.org')
+    const fastgit = github.replace('github.com', 'download.fastgit.org')
 
     replyWithMarkdownV2(
       escape(outdent`
