@@ -40,7 +40,7 @@ export const apps: Record<
     platforms: Platforms
   }
 > = {
-  qv: {
+  qv2ray: {
     name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
@@ -72,19 +72,19 @@ export const apps: Record<
     repo: 'QvPlugin-SSR',
     platforms: common,
   },
-  tro: {
+  trojan: {
     name: 'Trojan 插件',
     owner,
     repo: 'QvPlugin-Trojan',
     platforms: common,
   },
-  trogo: {
+  trojango: {
     name: 'Trojan-Go 插件',
     owner,
     repo: 'QvPlugin-Trojan-Go',
     platforms: common,
   },
-  trogocore: {
+  trojangocore: {
     name: 'Trojan-Go 核心',
     owner: 'p4gefau1t',
     repo: 'trojan-go',
