@@ -8,7 +8,7 @@ This is a highly opinionated project, still it can be configured for general use
 
 The following environment variables should be provided:
 
-- `BOT_TOKEN`: Telegram bot token. The bot should be added to your **public** channel first. [Click here](http://t.me/BotFather) to create a bot.
+- `BOT_TOKEN`: Telegram bot token. [Click here](http://t.me/BotFather) to create a bot.
 - `GH_TOKEN`: GitHub token with any scope (**you should grant none for security**). [Click here](https://github.com/settings/tokens/new?description=release-bot) to create one.
 
 The following code should be modified to suit your needs:
