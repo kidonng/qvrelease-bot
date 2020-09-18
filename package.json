@@ -4,6 +4,7 @@
   "dependencies": {
     "@octokit/rest": "^18.0.3",
     "dayjs": "^1.8.30",
+    "got": "^11.6.2",
     "outdent": "^0.7.1",
     "telegraf": "^3.38.0"
   },

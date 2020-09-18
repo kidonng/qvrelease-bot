@@ -22,7 +22,7 @@ const linux: Platforms = {
 const macos: Platforms = {
   mac: 'macOS',
 }
-const common: Platforms = {
+export const common: Platforms = {
   ...windows,
   ...linux,
   ...macos,
@@ -133,5 +133,23 @@ export const apps: Record<
       linux: 'linux-64',
       mac: 'macos-64',
     },
+  },
+}
+
+export const workflows: Record<
+  string,
+  {
+    owner: string
+    repo: string
+    // https://docs.github.com/en/rest/reference/actions#list-repository-workflows
+    workflow_id: number
+    platforms: Platforms
+  }
+> = {
+  cmake: {
+    owner,
+    repo: 'Qv2ray',
+    workflow_id: 698782,
+    platforms: common,
   },
 }

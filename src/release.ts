@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { Component, escape } from './utils'
 import { platforms as _platforms, apps, Platform } from './data'
-import { help } from './help'
 
 dayjs.extend(utc)
 
@@ -13,6 +12,19 @@ const { GH_TOKEN } = process.env
 const {
   repos: { getLatestRelease, listReleases },
 } = new Octokit({ auth: GH_TOKEN })
+
+const help = escape(outdent`
+  *命令* \`/rel [应用] [版本]\`
+  *示例* \`/rel qv2ray win64\`
+  *应用*
+  ${Object.entries(apps)
+    .map(([app, { name }]) => `· \`${app}\` ${name}`)
+    .join('\n')}
+  *版本*
+  ${Object.entries(_platforms)
+    .map(([platform, name]) => `· \`${platform}\` ${name}`)
+    .join('\n')}
+`)
 
 const latestRelease = async ({
   owner,
