@@ -24,21 +24,25 @@ const help = escape(outdent`
 `)
 
 export const action: Component = (telegraf) => {
-  telegraf.hears(/^\/act(?:@Qvreleasebot)?(?: (\w+) (\w+))?$/, async (ctx) => {
+  telegraf.hears(/^\/act(?:@Qvreleasebot)?(?: (\w+) (\w+))?$/i, async (ctx) => {
     const { match, reply, replyWithMarkdownV2, message } = ctx
     const extra = {
       reply_to_message_id: message!.message_id,
     }
 
-    const [, source, version] = match!
+    const [, _source, _version] = match!
+    const source = _source?.toLowerCase()
+    const version = _version?.toLowerCase()
 
     if (!source) return replyWithMarkdownV2(help, extra)
 
-    if (!(source in workflows)) return reply(`没有找到资源 ${source}！`, extra)
+    if (!workflows.hasOwnProperty(source))
+      return reply(`没有找到资源 ${source}！`, extra)
     const { name: _name, owner, repo, workflow_id, versions } = workflows[
       source
     ]
-    if (!(version in versions)) return reply(`没有找到版本 ${version}！`, extra)
+    if (!versions.hasOwnProperty(version))
+      return reply(`没有找到版本 ${version}！`, extra)
 
     const {
       data: {

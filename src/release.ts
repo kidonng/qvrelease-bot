@@ -56,20 +56,23 @@ const latestRelease = async ({
 
 export const release: Component = (telegraf) => {
   telegraf.hears(
-    /^\/rel(?:@Qvreleasebot)?(?: (\w+) (\w+)( beta)?)?$/,
+    /^\/rel(?:@Qvreleasebot)?(?: (\w+) (\w+)( beta)?)?$/i,
     async (ctx) => {
       const { match, reply, replyWithMarkdownV2, message } = ctx
       const extra = {
         reply_to_message_id: message!.message_id,
       }
 
-      const [, source, version, beta] = match!
+      const [, _source, _version, beta] = match!
+      const source = _source?.toLowerCase()
+      const version = _version?.toLowerCase()
 
       if (!source) return replyWithMarkdownV2(help, extra)
 
-      if (!(source in sources)) return reply(`没有找到资源 ${source}！`, extra)
+      if (!sources.hasOwnProperty(source))
+        return reply(`没有找到资源 ${source}！`, extra)
       const { name, owner, repo, prerelease, versions } = sources[source]
-      if (!(version in versions))
+      if (!versions.hasOwnProperty(version))
         return reply(`没有找到版本 ${version}！`, extra)
 
       const { assets, tag_name, published_at } = await latestRelease({
