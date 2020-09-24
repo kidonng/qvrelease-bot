@@ -3,8 +3,8 @@ import outdent from 'outdent'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import got from 'got'
-import { Component, escape } from './utils'
-import { platforms as _platforms, workflows, common, Platform } from './data'
+import { Component, escape, sourceHelp, versionHelp } from './utils'
+import { platforms, workflows, common, Platform } from './data'
 
 dayjs.extend(utc)
 
@@ -15,17 +15,12 @@ const {
 } = new Octokit({ auth: GH_TOKEN })
 
 const help = escape(outdent`
-  *命令* \`/act [编译目标] [版本]\`
-  *示例* \`/act cmake win64\`
-  *编译目标*
-  ${Object.keys(workflows)
-    .map((app) => `· \`${app}\``)
-    .join('\n')}
-  *版本*
-  ${Object.entries(_platforms)
-    .filter(([platform]) => platform in common)
-    .map(([platform, name]) => `· \`${platform}\` ${name}`)
-    .join('\n')}
+  *命令* \`/act [资源] [版本]\`
+  *示例* \`/act qv2ray win64\`
+  *资源*
+  ${sourceHelp(workflows)}
+  *Qv2ray 版本*
+  ${versionHelp(common)}
 `)
 
 export const action: Component = (telegraf) => {
@@ -35,15 +30,15 @@ export const action: Component = (telegraf) => {
       reply_to_message_id: message!.message_id,
     }
 
-    const [, workflow, platform] = match!
+    const [, source, version] = match!
 
-    if (!workflow) return replyWithMarkdownV2(help, extra)
+    if (!source) return replyWithMarkdownV2(help, extra)
 
-    if (!(workflow in workflows))
-      return reply(`没有找到编译目标 ${workflow}！`, extra)
-    const { owner, repo, workflow_id, platforms } = workflows[workflow]
-    if (!(platform in platforms))
-      return reply(`没有找到平台 ${platform}！`, extra)
+    if (!(source in workflows)) return reply(`没有找到资源 ${source}！`, extra)
+    const { name: _name, owner, repo, workflow_id, versions } = workflows[
+      source
+    ]
+    if (!(version in versions)) return reply(`没有找到版本 ${version}！`, extra)
 
     const {
       data: {
@@ -64,10 +59,10 @@ export const action: Component = (telegraf) => {
     })
 
     const artifact = artifacts.find((artifact) =>
-      artifact.name.includes(platforms[platform as Platform]!)
+      artifact.name.includes(versions[version as Platform]!)
     )
 
-    if (!artifact) return reply('最新版本中没有相应文件！', extra)
+    if (!artifact) return reply('未找到该版本文件！', extra)
 
     const { id: artifact_id, name, created_at } = artifact
 
@@ -77,9 +72,7 @@ export const action: Component = (telegraf) => {
     ).on('response', ({ redirectUrls: [link] }) => {
       replyWithMarkdownV2(
         escape(outdent`
-          *${workflow}* (${_platforms[platform as Platform]}) \`${dayjs(
-          created_at
-        )
+          *${_name}* (${platforms[version as Platform]}) \`${dayjs(created_at)
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`
           [${escape(name)}](${link})

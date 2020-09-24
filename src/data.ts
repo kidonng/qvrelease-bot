@@ -1,10 +1,10 @@
 export const platforms = {
-  win32i: 'Windows 32 位安装包',
-  win64i: 'Windows 64 位安装包',
+  win32inst: 'Windows 32 位安装包',
+  win64inst: 'Windows 64 位安装包',
   win32: 'Windows 32 位',
   win64: 'Windows 64 位',
   mac: 'macOS',
-  macl: 'macOS 旧版',
+  maclegacy: 'macOS 旧版',
   linux: 'Linux 64 位',
   deb: 'Debian',
 }
@@ -28,69 +28,69 @@ export const common: Platforms = {
   ...macos,
 }
 export const qv2ray: Platforms = {
-  win32i: 'win32',
-  win64i: 'win64',
+  win32inst: 'win32',
+  win64inst: 'win64',
   deb: 'deb',
-  macl: 'legacy',
+  maclegacy: 'legacy',
 }
 
 const owner = 'Qv2ray'
 
-export const apps: Record<
+export const sources: Record<
   string,
   {
     name: string
     owner: string
     repo: string
     prerelease?: boolean
-    platforms: Platforms
+    versions: Platforms
   }
 > = {
   qv2ray: {
     name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
-    platforms: {
+    versions: {
       ...common,
       ...qv2ray,
     },
   },
-  com: {
+  command: {
     name: 'Command 插件',
     owner,
     repo: 'QvPlugin-Command',
-    platforms: common,
+    versions: common,
   },
   ss: {
     name: 'SS 插件',
     owner,
     repo: 'QvPlugin-SS',
-    platforms: common,
+    versions: common,
   },
   ssr: {
     name: 'SSR 插件',
     owner,
     repo: 'QvPlugin-SSR',
-    platforms: common,
+    versions: common,
   },
   trojan: {
     name: 'Trojan 插件',
     owner,
     repo: 'QvPlugin-Trojan',
-    platforms: common,
+    versions: common,
   },
   trojango: {
     name: 'Trojan-Go 插件',
     owner,
     repo: 'QvPlugin-Trojan-Go',
-    platforms: common,
+    versions: common,
   },
   trojangocore: {
     name: 'Trojan-Go 核心',
     owner: 'p4gefau1t',
     repo: 'trojan-go',
     prerelease: true,
-    platforms: {
+    versions: {
       win32: 'windows-386',
       win64: 'windows-amd64',
       linux: 'linux-amd64',
@@ -101,13 +101,13 @@ export const apps: Record<
     name: 'NaiveProxy 插件',
     owner,
     repo: 'QvPlugin-NaiveProxy',
-    platforms: common,
+    versions: common,
   },
   naivecore: {
     name: 'NaiveProxy 核心',
     owner: 'klzgrad',
     repo: 'naiveproxy',
-    platforms: {
+    versions: {
       win32: 'win-x86',
       win64: 'win-x64',
       linux: 'linux-x64',
@@ -118,7 +118,7 @@ export const apps: Record<
     name: 'V2Ray 核心',
     owner: 'v2fly',
     repo: 'v2ray-core',
-    platforms: {
+    versions: {
       win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
@@ -129,7 +129,7 @@ export const apps: Record<
     name: 'V2Ray VLESS 核心',
     owner: 'rprx',
     repo: 'v2ray-vless',
-    platforms: {
+    versions: {
       win64: 'windows-64',
       linux: 'linux-64',
       mac: 'macos-64',
@@ -140,17 +140,19 @@ export const apps: Record<
 export const workflows: Record<
   string,
   {
+    name: string
     owner: string
     repo: string
     // https://docs.github.com/en/rest/reference/actions#list-repository-workflows
     workflow_id: number
-    platforms: Platforms
+    versions: Platforms
   }
 > = {
-  cmake: {
+  qv2ray: {
+    name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
     workflow_id: 698782,
-    platforms: common,
+    versions: common,
   },
 }

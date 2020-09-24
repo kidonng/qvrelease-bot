@@ -2,8 +2,8 @@ import { Octokit } from '@octokit/rest'
 import outdent from 'outdent'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { Component, escape, platformHelp } from './utils'
-import { platforms as _platforms, apps, Platform, common, qv2ray } from './data'
+import { Component, escape, sourceHelp, versionHelp } from './utils'
+import { platforms, sources, Platform, common, qv2ray } from './data'
 
 dayjs.extend(utc)
 
@@ -14,17 +14,15 @@ const {
 } = new Octokit({ auth: GH_TOKEN })
 
 const help = escape(outdent`
-  *命令* \`/rel [应用] [版本]\`
+  *命令* \`/rel [资源] [版本]\`
   在命令后添加 \`beta\` 获取预发布版本
   *示例* \`/rel qv2ray win64 beta\`
-  *应用*
-  ${Object.entries(apps)
-    .map(([app, { name }]) => `· \`${app}\` ${name}`)
-    .join('\n')}
+  *资源*
+  ${sourceHelp(sources)}
   *通用版本*
-  ${platformHelp(common)}
+  ${versionHelp(common)}
   *Qv2ray 版本*
-  ${platformHelp(qv2ray)}
+  ${versionHelp(qv2ray)}
 `)
 
 const latestRelease = async ({
@@ -65,14 +63,14 @@ export const release: Component = (telegraf) => {
         reply_to_message_id: message!.message_id,
       }
 
-      const [, app, platform, beta] = match!
+      const [, source, version, beta] = match!
 
-      if (!app) return replyWithMarkdownV2(help, extra)
+      if (!source) return replyWithMarkdownV2(help, extra)
 
-      if (!(app in apps)) return reply(`没有找到应用 ${app}！`, extra)
-      const { name, owner, repo, prerelease, platforms } = apps[app]
-      if (!(platform in platforms))
-        return reply(`没有找到平台 ${platform}！`, extra)
+      if (!(source in sources)) return reply(`没有找到资源 ${source}！`, extra)
+      const { name, owner, repo, prerelease, versions } = sources[source]
+      if (!(version in versions))
+        return reply(`没有找到版本 ${version}！`, extra)
 
       const { assets, tag_name, published_at } = await latestRelease({
         owner,
@@ -81,17 +79,17 @@ export const release: Component = (telegraf) => {
       })
 
       const asset = assets.find((asset) =>
-        asset.browser_download_url.includes(platforms[platform as Platform]!)
+        asset.browser_download_url.includes(versions[version as Platform]!)
       )
 
-      if (!asset) return reply('最新版本中没有相应文件！', extra)
+      if (!asset) return reply('未找到该版本文件！', extra)
 
       const github = asset.browser_download_url.replace(/_/g, '\\_')
       const fastgit = github.replace('github.com', 'download.fastgit.org')
 
       replyWithMarkdownV2(
         escape(outdent`
-          *${name} ${tag_name}* (${_platforms[platform as Platform]}) \`${dayjs(
+          *${name} ${tag_name}* (${platforms[version as Platform]}) \`${dayjs(
           published_at
         )
           .utcOffset(8)
