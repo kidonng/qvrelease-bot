@@ -2,6 +2,7 @@ import { Telegraf, Context } from 'telegraf/typings'
 import { ExtraEditMessage } from 'telegraf/typings/telegram-types'
 import { MiddlewareFn } from 'telegraf/typings/composer'
 import { NowResponse } from '@vercel/node'
+import { Platforms, Platform, platforms as _platforms } from './data'
 
 export interface IContext extends Context {
   replyWithMarkdownV2(
@@ -21,3 +22,8 @@ export const escape = (text: string) =>
   )
 
 export const request: { handler?: NowResponse } = {}
+
+export const platformHelp = (platforms: Platforms) =>
+  Object.keys(platforms)
+    .map((platform) => `· \`${platform}\` ${_platforms[platform as Platform]}`)
+    .join('\n')

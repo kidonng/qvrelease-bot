@@ -10,7 +10,7 @@ export const platforms = {
 }
 
 export type Platform = keyof typeof platforms
-type Platforms = Partial<Record<Platform, string>>
+export type Platforms = Partial<Record<Platform, string>>
 
 const windows: Platforms = {
   win32: 'Windows-x86',
@@ -26,6 +26,12 @@ export const common: Platforms = {
   ...windows,
   ...linux,
   ...macos,
+}
+export const qv2ray: Platforms = {
+  win32i: 'win32',
+  win64i: 'win64',
+  deb: 'deb',
+  macl: 'legacy',
 }
 
 const owner = 'Qv2ray'
@@ -44,13 +50,9 @@ export const apps: Record<
     name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
-    prerelease: true,
     platforms: {
       ...common,
-      win32i: 'win32',
-      win64i: 'win64',
-      deb: 'deb',
-      macl: 'legacy',
+      ...qv2ray,
     },
   },
   com: {
@@ -63,7 +65,6 @@ export const apps: Record<
     name: 'SS 插件',
     owner,
     repo: 'QvPlugin-SS',
-    prerelease: true,
     platforms: common,
   },
   ssr: {
