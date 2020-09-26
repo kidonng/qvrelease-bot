@@ -56,7 +56,7 @@ const latestRelease = async ({
 
 export const release: Component = (telegraf) => {
   telegraf.hears(
-    /^\/rel(?:@Qvreleasebot)?(?: (\w+) (\w+)( beta)?)?$/i,
+    /^\/rel(?:@Qvreleasebot)?(?: (\w+))?(?: (\w+))?( beta)?$/i,
     async (ctx) => {
       const { match, reply, replyWithMarkdownV2, message } = ctx
       const extra = {
@@ -72,7 +72,7 @@ export const release: Component = (telegraf) => {
       if (!sources.hasOwnProperty(source))
         return reply(`没有找到资源 ${source}！`, extra)
       const { name, owner, repo, prerelease, versions } = sources[source]
-      if (!versions.hasOwnProperty(version))
+      if (typeof versions === 'object' && !versions.hasOwnProperty(version))
         return reply(`没有找到版本 ${version}！`, extra)
 
       const { assets, tag_name, published_at } = await latestRelease({
@@ -82,7 +82,11 @@ export const release: Component = (telegraf) => {
       })
 
       const asset = assets.find((asset) =>
-        asset.browser_download_url.includes(versions[version as Platform]!)
+        asset.browser_download_url.includes(
+          typeof versions === 'string'
+            ? versions
+            : versions[version as Platform]!
+        )
       )
 
       if (!asset) return reply('未找到该版本文件！', extra)
@@ -92,9 +96,9 @@ export const release: Component = (telegraf) => {
 
       replyWithMarkdownV2(
         escape(outdent`
-          *${name} ${tag_name}* (${platforms[version as Platform]}) \`${dayjs(
-          published_at
-        )
+          *${name}${
+            version ? ` ${platforms[version as Platform]}` : ''
+          }* (${tag_name}) \`${dayjs(published_at)
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`
           · [GitHub](${github})

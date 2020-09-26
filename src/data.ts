@@ -43,7 +43,7 @@ export const sources: Record<
     owner: string
     repo: string
     prerelease?: boolean
-    versions: Platforms
+    versions: Platforms | string
   }
 > = {
   qv2ray: {
@@ -146,6 +146,18 @@ export const sources: Record<
       linux: 'linux-64',
       mac: 'macos',
     },
+  },
+  dlc: {
+    name: 'Geosite 数据',
+    owner: 'v2fly',
+    repo: 'domain-list-community',
+    versions: 'dlc.dat',
+  },
+  ip: {
+    name: 'GeoIP 数据',
+    owner: 'v2fly',
+    repo: 'geoip',
+    versions: 'geoip.dat',
   },
 }
 
