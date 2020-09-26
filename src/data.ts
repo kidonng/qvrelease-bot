@@ -114,7 +114,7 @@ export const sources: Record<
       mac: 'osx',
     },
   },
-  core: {
+  v2ray: {
     name: 'V2Ray 核心',
     owner: 'v2fly',
     repo: 'v2ray-core',
@@ -125,7 +125,7 @@ export const sources: Record<
       mac: 'macos',
     },
   },
-  vless: {
+  v2rayvless: {
     name: 'V2Ray VLESS 核心',
     owner: 'rprx',
     repo: 'v2ray-vless',
@@ -133,6 +133,18 @@ export const sources: Record<
       win64: 'windows-64',
       linux: 'linux-64',
       mac: 'macos-64',
+    },
+  },
+  v2rayunstable: {
+    name: 'V2Ray 核心 (Unstable)',
+    owner: 'v2fly',
+    repo: 'V2FlyBleedingEdgeBinary',
+    prerelease: true,
+    versions: {
+      win32: 'windows-32',
+      win64: 'windows-64',
+      linux: 'linux-64',
+      mac: 'macos',
     },
   },
 }
