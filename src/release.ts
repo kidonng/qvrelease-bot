@@ -97,8 +97,8 @@ export const release: Component = (telegraf) => {
       replyWithMarkdownV2(
         escape(outdent`
           *${name}${
-            version ? ` ${platforms[version as Platform]}` : ''
-          }* (${tag_name}) \`${dayjs(published_at)
+          version ? ` ${platforms[version as Platform]}` : ''
+        }* (${tag_name}${beta ? beta : ''}) \`${dayjs(published_at)
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`
           · [GitHub](${github})
