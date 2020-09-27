@@ -15,8 +15,8 @@ const {
 
 const help = escape(outdent`
   *命令* \`/rel [资源] [版本]\`
-  在命令后添加 \`beta\` 获取预发布版本
-  *示例* \`/rel qv2ray win64 beta\`
+  在命令后添加 \`pre\` 获取预发布版本
+  *示例* \`/rel qv2ray win64 pre\`
   *资源*
   ${sourceHelp(sources)}
   *通用版本*
@@ -56,14 +56,14 @@ const latestRelease = async ({
 
 export const release: Component = (telegraf) => {
   telegraf.hears(
-    /^\/rel(?:@Qvreleasebot)?(?: (\w+))?(?: (\w+))?( beta)?$/i,
+    /^\/rel(?:@Qvreleasebot)?(?: (\w+))?(?: (\w+))?( pre)?$/i,
     async (ctx) => {
       const { match, reply, replyWithMarkdownV2, message } = ctx
       const extra = {
         reply_to_message_id: message!.message_id,
       }
 
-      const [, _source, _version, beta] = match!
+      const [, _source, _version, pre] = match!
       const source = _source?.toLowerCase()
       const version = _version?.toLowerCase()
 
@@ -75,10 +75,15 @@ export const release: Component = (telegraf) => {
       if (typeof versions === 'object' && !versions.hasOwnProperty(version))
         return reply(`没有找到版本 ${version}！`, extra)
 
-      const { assets, tag_name, published_at } = await latestRelease({
+      const {
+        assets,
+        tag_name,
+        published_at,
+        prerelease: isPrerelease,
+      } = await latestRelease({
         owner,
         repo,
-        prerelease: prerelease || Boolean(beta),
+        prerelease: prerelease || Boolean(pre),
       })
 
       const asset = assets.find((asset) =>
@@ -98,7 +103,9 @@ export const release: Component = (telegraf) => {
         escape(outdent`
           *${name}${
           version ? ` ${platforms[version as Platform]}` : ''
-        }* (${tag_name}${beta ? beta : ''}) \`${dayjs(published_at)
+        }* (${tag_name}${pre && isPrerelease ? ' pre' : ''}) \`${dayjs(
+          published_at
+        )
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`
           · [GitHub](${github})
