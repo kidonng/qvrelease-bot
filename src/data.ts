@@ -179,4 +179,46 @@ export const workflows: Record<
     workflow_id: 698782,
     versions: common,
   },
+  command: {
+    name: 'Command 插件',
+    owner,
+    repo: 'QvPlugin-Command',
+    workflow_id: 1097778,
+    versions: common,
+  },
+  ss: {
+    name: 'SS 插件',
+    owner,
+    repo: 'QvPlugin-SS',
+    workflow_id: 1938518,
+    versions: common,
+  },
+  ssr: {
+    name: 'SSR 插件',
+    owner,
+    repo: 'QvPlugin-SSR',
+    workflow_id: 976624,
+    versions: common,
+  },
+  trojan: {
+    name: 'Trojan 插件',
+    owner,
+    repo: 'QvPlugin-Trojan',
+    workflow_id: 1036904,
+    versions: common,
+  },
+  trojango: {
+    name: 'Trojan-Go 插件',
+    owner,
+    repo: 'QvPlugin-Trojan-Go',
+    workflow_id: 1429634,
+    versions: common,
+  },
+  naive: {
+    name: 'NaiveProxy 插件',
+    owner,
+    repo: 'QvPlugin-NaiveProxy',
+    workflow_id: 1495269,
+    versions: common,
+  }
 }
