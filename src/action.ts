@@ -19,7 +19,7 @@ const help = escape(outdent`
   *示例* \`/act qv2ray win64\`
   *资源*
   ${sourceHelp(workflows)}
-  *Qv2ray 版本*
+  *版本*
   ${versionHelp(common)}
 `)
 

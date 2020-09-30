@@ -13,8 +13,8 @@ The following environment variables should be provided:
 
 The following code should be modified to suit your needs:
 
-- [Command regex](https://github.com/kidonng/qvrelease-bot/blob/2171714e5bec01ab854268be9891760d9fe21959/src/release.ts#L47)
-- [Help text](https://github.com/kidonng/qvrelease-bot/blob/master/src/help.ts)
+- Command regex (`@username`)
+- Help text
 - [Assets data](https://github.com/kidonng/qvrelease-bot/blob/master/src/data.ts)
 
 ### Using [Vercel](http://vercel.com/) and Webhooks (recommended)
