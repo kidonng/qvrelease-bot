@@ -127,12 +127,13 @@ export const sources: Record<
   },
   v2rayvless: {
     name: 'V2Ray VLESS 核心',
-    owner: 'rprx',
-    repo: 'v2ray-vless',
+    owner: 'charlieethan',
+    repo: 'vless-build',
     versions: {
+      win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
-      mac: 'macos-64',
+      mac: 'macos',
     },
   },
   v2rayunstable: {
