@@ -3,7 +3,7 @@ import outdent from 'outdent'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import got from 'got'
-import { Component, escape, sourceHelp, versionHelp } from './utils'
+import { Component, escape, sourceHelp, typeHelp } from './utils'
 import { platforms, workflows, common, Platform } from './data'
 
 dayjs.extend(utc)
@@ -15,12 +15,12 @@ const {
 } = new Octokit({ auth: GH_TOKEN })
 
 const help = escape(outdent`
-  *命令* \`/act [资源] [版本]\`
+  *命令* \`/act [资源] [类型]\`
   *示例* \`/act qv2ray win64\`
   *资源*
   ${sourceHelp(workflows)}
-  *版本*
-  ${versionHelp(common)}
+  *类型*
+  ${typeHelp(common)}
 `)
 
 export const action: Component = (telegraf) => {
@@ -30,19 +30,17 @@ export const action: Component = (telegraf) => {
       reply_to_message_id: message!.message_id,
     }
 
-    const [, _source, _version] = match!
+    const [, _source, _type] = match!
     const source = _source?.toLowerCase()
-    const version = _version?.toLowerCase()
+    const type = _type?.toLowerCase()
 
     if (!source) return replyWithMarkdownV2(help, extra)
 
     if (!workflows.hasOwnProperty(source))
-      return reply(`没有找到资源 ${source}！`, extra)
-    const { name: _name, owner, repo, workflow_id, versions } = workflows[
-      source
-    ]
-    if (!versions.hasOwnProperty(version))
-      return reply(`没有找到版本 ${version}！`, extra)
+      return reply(`资源 ${source} 不存在！`, extra)
+    const { name, owner, repo, workflow_id, types } = workflows[source]
+    if (!types.hasOwnProperty(type))
+      return reply(`类型 ${type} 不存在！`, extra)
 
     const {
       data: {
@@ -63,23 +61,23 @@ export const action: Component = (telegraf) => {
     })
 
     const artifact = artifacts.find((artifact) =>
-      artifact.name.includes(versions[version as Platform]!)
+      artifact.name.includes(types[type as Platform]!)
     )
 
-    if (!artifact) return reply('未找到该版本文件！', extra)
+    if (!artifact) return reply(`未在 Run ${run_id} 中找到此类型文件！`, extra)
 
-    const { id: artifact_id, name, created_at } = artifact
+    const { id, name: artifactName, created_at } = artifact
 
     got(
-      `https://api.github.com/repos/${owner}/${repo}/actions/artifacts/${artifact_id}/zip`,
+      `https://api.github.com/repos/${owner}/${repo}/actions/artifacts/${id}/zip`,
       { headers: { Authorization: `token ${GH_TOKEN}` } }
     ).on('response', ({ redirectUrls: [link] }) => {
       replyWithMarkdownV2(
         escape(outdent`
-          *${_name}* (${platforms[version as Platform]}) \`${dayjs(created_at)
+          *${name}* (${platforms[type as Platform]}) \`${dayjs(created_at)
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`
-          [${escape(name)}](${link})
+          [${escape(artifactName)}](${link})
         `),
         extra
       )

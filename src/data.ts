@@ -43,14 +43,14 @@ export const sources: Record<
     owner: string
     repo: string
     prerelease?: boolean
-    versions: Platforms | string
+    types: Platforms | string
   }
 > = {
   qv2ray: {
     name: 'Qv2ray',
     owner,
     repo: 'Qv2ray',
-    versions: {
+    types: {
       ...common,
       ...qv2ray,
     },
@@ -59,38 +59,38 @@ export const sources: Record<
     name: 'Command 插件',
     owner,
     repo: 'QvPlugin-Command',
-    versions: common,
+    types: common,
   },
   ss: {
     name: 'SS 插件',
     owner,
     repo: 'QvPlugin-SS',
-    versions: common,
+    types: common,
   },
   ssr: {
     name: 'SSR 插件',
     owner,
     repo: 'QvPlugin-SSR',
-    versions: common,
+    types: common,
   },
   trojan: {
     name: 'Trojan 插件',
     owner,
     repo: 'QvPlugin-Trojan',
-    versions: common,
+    types: common,
   },
   trojango: {
     name: 'Trojan-Go 插件',
     owner,
     repo: 'QvPlugin-Trojan-Go',
-    versions: common,
+    types: common,
   },
   trojangocore: {
     name: 'Trojan-Go 核心',
     owner: 'p4gefau1t',
     repo: 'trojan-go',
     prerelease: true,
-    versions: {
+    types: {
       win32: 'windows-386',
       win64: 'windows-amd64',
       linux: 'linux-amd64',
@@ -101,13 +101,13 @@ export const sources: Record<
     name: 'NaiveProxy 插件',
     owner,
     repo: 'QvPlugin-NaiveProxy',
-    versions: common,
+    types: common,
   },
   naivecore: {
     name: 'NaiveProxy 核心',
     owner: 'klzgrad',
     repo: 'naiveproxy',
-    versions: {
+    types: {
       win32: 'win-x86',
       win64: 'win-x64',
       linux: 'linux-x64',
@@ -118,7 +118,7 @@ export const sources: Record<
     name: 'V2Ray 核心',
     owner: 'v2fly',
     repo: 'v2ray-core',
-    versions: {
+    types: {
       win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
@@ -129,7 +129,7 @@ export const sources: Record<
     name: 'V2Ray VLESS 核心',
     owner: 'charlieethan',
     repo: 'vless-build',
-    versions: {
+    types: {
       win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
@@ -141,7 +141,7 @@ export const sources: Record<
     owner: 'v2fly',
     repo: 'V2FlyBleedingEdgeBinary',
     prerelease: true,
-    versions: {
+    types: {
       win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
@@ -152,13 +152,13 @@ export const sources: Record<
     name: 'Geosite 数据',
     owner: 'v2fly',
     repo: 'domain-list-community',
-    versions: 'dlc.dat',
+    types: 'dlc.dat',
   },
   ip: {
     name: 'GeoIP 数据',
     owner: 'v2fly',
     repo: 'geoip',
-    versions: 'geoip.dat',
+    types: 'geoip.dat',
   },
 }
 
@@ -170,7 +170,7 @@ export const workflows: Record<
     repo: string
     // https://docs.github.com/en/rest/reference/actions#list-repository-workflows
     workflow_id: number
-    versions: Platforms
+    types: Platforms
   }
 > = {
   qv2ray: {
@@ -178,48 +178,48 @@ export const workflows: Record<
     owner,
     repo: 'Qv2ray',
     workflow_id: 698782,
-    versions: common,
+    types: common,
   },
   command: {
     name: 'Command 插件',
     owner,
     repo: 'QvPlugin-Command',
     workflow_id: 1097778,
-    versions: common,
+    types: common,
   },
   ss: {
     name: 'SS 插件',
     owner,
     repo: 'QvPlugin-SS',
     workflow_id: 1938518,
-    versions: common,
+    types: common,
   },
   ssr: {
     name: 'SSR 插件',
     owner,
     repo: 'QvPlugin-SSR',
     workflow_id: 976624,
-    versions: common,
+    types: common,
   },
   trojan: {
     name: 'Trojan 插件',
     owner,
     repo: 'QvPlugin-Trojan',
     workflow_id: 1036904,
-    versions: common,
+    types: common,
   },
   trojango: {
     name: 'Trojan-Go 插件',
     owner,
     repo: 'QvPlugin-Trojan-Go',
     workflow_id: 1429634,
-    versions: common,
+    types: common,
   },
   naive: {
     name: 'NaiveProxy 插件',
     owner,
     repo: 'QvPlugin-NaiveProxy',
     workflow_id: 1495269,
-    versions: common,
-  }
+    types: common,
+  },
 }

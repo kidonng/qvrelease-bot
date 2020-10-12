@@ -27,7 +27,7 @@ export const sourceHelp = (_sources: typeof sources | typeof workflows) =>
   Object.entries(_sources)
     .map(([app, { name }]) => `· \`${app}\` ${name}`)
     .join('\n')
-export const versionHelp = (versions: Platforms) =>
-  Object.keys(versions)
+export const typeHelp = (types: Platforms) =>
+  Object.keys(types)
     .map((platform) => `· \`${platform}\` ${platforms[platform as Platform]}`)
     .join('\n')
