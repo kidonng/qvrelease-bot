@@ -10,7 +10,7 @@ dayjs.extend(utc)
 const { GH_TOKEN } = process.env
 
 const {
-  repos: { getLatestRelease, listReleases },
+  repos: { listReleases },
 } = new Octokit({ auth: GH_TOKEN })
 
 const help = escape(outdent`
@@ -24,35 +24,6 @@ const help = escape(outdent`
   *Qv2ray 额外类型*
   ${typeHelp(qv2ray)}
 `)
-
-const latestRelease = async ({
-  owner,
-  repo,
-  prerelease,
-}: {
-  owner: string
-  repo: string
-  prerelease?: boolean
-}) => {
-  if (prerelease) {
-    const {
-      data: [data],
-    } = await listReleases({
-      owner,
-      repo,
-      per_page: 1,
-    })
-
-    return data
-  }
-
-  const { data } = await getLatestRelease({
-    owner,
-    repo,
-  })
-
-  return data
-}
 
 export const release: Component = (telegraf) => {
   telegraf.hears(
@@ -75,16 +46,15 @@ export const release: Component = (telegraf) => {
       if (typeof types === 'object' && !types.hasOwnProperty(type))
         return reply(`类型 ${type} 不存在！`, extra)
 
-      const {
-        assets,
-        tag_name,
-        published_at,
-        prerelease: isPrerelease,
-      } = await latestRelease({
+      const { data: releases } = await listReleases({
         owner,
         repo,
-        prerelease: prerelease || Boolean(pre),
       })
+      const [{ assets, tag_name, published_at }] = releases
+        .filter((release) => !release.draft)
+        .filter((release) =>
+          prerelease || pre ? release.prerelease : !release.prerelease
+        )
 
       const asset = assets.find((asset) =>
         asset.browser_download_url.includes(
@@ -101,7 +71,7 @@ export const release: Component = (telegraf) => {
         escape(outdent`
           *${name}${
           type ? ` ${platforms[type as Platform]}` : ''
-        }* (${tag_name}${pre && isPrerelease ? ' pre' : ''}) \`${dayjs(
+        }* (${tag_name}${prerelease || pre ? ' pre' : ''}) \`${dayjs(
           published_at
         )
           .utcOffset(8)
