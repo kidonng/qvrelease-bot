@@ -2,7 +2,7 @@ import { Octokit } from '@octokit/rest'
 import outdent from 'outdent'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { Component, escape, sourceHelp, typeHelp } from './utils'
+import { botInfo, Component, escape, sourceHelp, typeHelp } from './utils'
 import { platforms, sources, Platform, common, qv2ray } from './data'
 
 dayjs.extend(utc)
@@ -27,7 +27,10 @@ const help = escape(outdent`
 
 export const release: Component = (telegraf) => {
   telegraf.hears(
-    /^\/rel(?:@Qvreleasebot)?(?: (\w+))?(?: (\w+))?( pre)?$/i,
+    RegExp(
+      `^/rel(?:@${botInfo.username})?(?: (\\w+))?(?: (\\w+))?( pre)?`,
+      'i'
+    ),
     async (ctx) => {
       const { match, reply, replyWithMarkdownV2, message } = ctx
       const extra = {
