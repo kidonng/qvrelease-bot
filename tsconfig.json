@@ -4,6 +4,8 @@
     "target": "ES2019",
     "lib": ["ES2019"],
     "noImplicitReturns": false,
+    // https://github.com/microsoft/TypeScript/issues/41848
+    "noUncheckedIndexedAccess": false,
     "esModuleInterop": true
   },
   "include": ["src"]

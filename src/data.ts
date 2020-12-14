@@ -9,8 +9,8 @@ export const platforms = {
   deb: 'Debian',
 }
 
-export type Platform = keyof typeof platforms
-export type Platforms = Partial<Record<Platform, string>>
+export type Platforms = Partial<typeof platforms>
+export type Platform = keyof Platforms
 
 const windows: Platforms = {
   win32: 'Windows-x86',
@@ -26,6 +26,12 @@ export const common: Platforms = {
   ...windows,
   ...linux,
   ...macos,
+}
+export const commonQWidget: Platforms = {
+  win32: 'Windows-x86-QWidget',
+  win64: 'Windows-x64-QWidget',
+  linux: 'linux-x64-QWidget',
+  mac: 'macOS-x64-QWidget',
 }
 export const qv2ray: Platforms = {
   win32inst: 'win32',
@@ -178,7 +184,7 @@ export const workflows: Record<
     owner,
     repo: 'Qv2ray',
     workflow_id: 698782,
-    types: common,
+    types: commonQWidget,
   },
   command: {
     name: 'Command 插件',

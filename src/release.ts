@@ -65,7 +65,14 @@ export const release: Component = (telegraf) => {
         )
       )
 
-      if (!asset) return reply(`未在 ${tag_name} 版本中找到此类型文件！`, extra)
+      if (!asset)
+        return reply(
+          `未在 https://github.com/${owner}/${repo}/releases/${tag_name} 版本中找到此类型文件！`,
+          {
+            ...extra,
+            disable_web_page_preview: true,
+          }
+        )
 
       const github = asset.browser_download_url.replace(/_/g, '\\_')
       const fastgit = github.replace('github.com', 'download.fastgit.org')
@@ -75,7 +82,7 @@ export const release: Component = (telegraf) => {
           *${name}${
           type ? ` ${platforms[type as Platform]}` : ''
         }* (${tag_name}${prerelease || pre ? ' pre' : ''}) \`${dayjs(
-          published_at
+          published_at!
         )
           .utcOffset(8)
           .format('YYYY-MM-DD HH:mm')}\`

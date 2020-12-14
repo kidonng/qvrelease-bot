@@ -67,7 +67,13 @@ export const action: Component = (telegraf) => {
       )
 
       if (!artifact)
-        return reply(`未在 Run ${run_id} 中找到此类型文件！`, extra)
+        return reply(
+          `未在 https://github.com/${owner}/${repo}/actions/runs/${run_id} 中找到此类型文件！`,
+          {
+            ...extra,
+            disable_web_page_preview: true,
+          }
+        )
 
       const { id, name: artifactName, created_at } = artifact
 
