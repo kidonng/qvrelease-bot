@@ -27,12 +27,6 @@ export const common: Platforms = {
   ...linux,
   ...macos,
 }
-export const commonQWidget: Platforms = {
-  win32: 'Windows-x86-QWidget',
-  win64: 'Windows-x64-QWidget',
-  linux: 'linux-x64-QWidget',
-  mac: 'macOS-x64-QWidget',
-}
 export const qv2ray: Platforms = {
   win32inst: 'win32',
   win64inst: 'win64',
@@ -184,7 +178,7 @@ export const workflows: Record<
     owner,
     repo: 'Qv2ray',
     workflow_id: 698782,
-    types: commonQWidget,
+    types: common,
   },
   command: {
     name: 'Command 插件',
