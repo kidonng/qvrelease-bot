@@ -4,9 +4,8 @@ export const platforms = {
   win32: 'Windows 32 位',
   win64: 'Windows 64 位',
   mac: 'macOS',
-  maclegacy: 'macOS 旧版',
+  macarm: 'macOS (ARM)',
   linux: 'Linux 64 位',
-  deb: 'Debian',
 }
 
 export type Platforms = Partial<typeof platforms>
@@ -30,8 +29,6 @@ export const common: Platforms = {
 export const qv2ray: Platforms = {
   win32inst: 'win32',
   win64inst: 'win64',
-  deb: 'deb',
-  maclegacy: 'legacy',
 }
 
 const owner = 'Qv2ray'
@@ -125,15 +122,16 @@ export const sources: Record<
       mac: 'macos',
     },
   },
-  v2rayvless: {
-    name: 'V2Ray VLESS 核心',
-    owner: 'charlieethan',
-    repo: 'vless-build',
+  xray: {
+    name: 'Xray 核心',
+    owner: 'XTLS',
+    repo: 'Xray-core',
     types: {
       win32: 'windows-32',
       win64: 'windows-64',
       linux: 'linux-64',
-      mac: 'macos',
+      mac: 'macos-64',
+      macarm: 'macos-arm64',
     },
   },
   v2rayunstable: {
