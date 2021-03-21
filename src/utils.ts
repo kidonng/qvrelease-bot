@@ -1,24 +1,15 @@
-import { Telegraf, Context } from 'telegraf/typings'
-import { ExtraEditMessage } from 'telegraf/typings/telegram-types'
-import { MiddlewareFn } from 'telegraf/typings/composer'
-import { User } from 'telegram-typings'
-import { NowResponse } from '@vercel/node'
+import { UserFromGetMe } from 'typegram'
+import { Octokit } from '@octokit/rest'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { Platforms, Platform, platforms, sources, workflows } from './data'
 
-export interface IContext extends Context {
-  replyWithMarkdownV2(
-    markdown: string,
-    extra?: ExtraEditMessage
-  ): MiddlewareFn<IContext>
-}
+export const { GH_TOKEN } = process.env
+export const octokit = new Octokit({ auth: GH_TOKEN })
 
-export interface Component {
-  (telegraf: Telegraf<IContext>): void
-}
-
-export interface MessageHandler {
-  (ctx: IContext): void
-}
+dayjs.extend(utc)
+export const formatTime = (time: string) =>
+  dayjs(time).utcOffset(8).format('YYYY-MM-DD HH:mm')
 
 // https://stackoverflow.com/a/60145565
 export const escape = (text: string) =>
@@ -26,9 +17,7 @@ export const escape = (text: string) =>
     y ? y : '\\' + x
   )
 
-export const handlers: { response?: NowResponse; message?: MessageHandler } = {}
-
-export const botInfo: Partial<User> = {}
+export const botInfo: Partial<UserFromGetMe> = {}
 
 export const sourceHelp = (_sources: typeof sources | typeof workflows) =>
   Object.entries(_sources)

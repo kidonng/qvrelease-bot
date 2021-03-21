@@ -1,17 +1,18 @@
-import { Octokit } from '@octokit/rest'
 import outdent from 'outdent'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import { botInfo, Component, escape, sourceHelp, typeHelp } from './utils'
+import { telegraf } from '.'
+import {
+  botInfo,
+  escape,
+  sourceHelp,
+  typeHelp,
+  octokit,
+  formatTime,
+} from './utils'
 import { platforms, sources, Platform, common, qv2ray } from './data'
-
-dayjs.extend(utc)
-
-const { GH_TOKEN } = process.env
 
 const {
   repos: { listReleases },
-} = new Octokit({ auth: GH_TOKEN })
+} = octokit
 
 const help = escape(outdent`
   *命令* \`/rel [资源] [类型]\`
@@ -25,72 +26,64 @@ const help = escape(outdent`
   ${typeHelp(qv2ray)}
 `)
 
-export const release: Component = (telegraf) => {
-  telegraf.hears(
-    RegExp(
-      `^/rel(?:@${botInfo.username})?(?: (\\w+))?(?: (\\w+))?( pre)?`,
-      'i'
-    ),
-    async (ctx) => {
-      const { match, reply, replyWithMarkdownV2, message } = ctx
-      const extra = {
-        reply_to_message_id: message!.message_id,
-      }
+telegraf.hears(
+  RegExp(`^/rel(?:@${botInfo.username})?(?: (\\w+))?(?: (\\w+))?( pre)?`, 'i'),
+  async (ctx) => {
+    const extra = {
+      reply_to_message_id: ctx.message!.message_id,
+    }
 
-      const [, _source, _type, pre] = match!
-      const source = _source?.toLowerCase()
-      const type = _type?.toLowerCase()
+    const [, _source, _type, pre] = ctx.match!
+    const source = _source?.toLowerCase()
+    const type = _type?.toLowerCase()
 
-      if (!source) return replyWithMarkdownV2(help, extra)
+    if (!source) return ctx.replyWithMarkdownV2(help, extra)
 
-      if (!sources.hasOwnProperty(source))
-        return reply(`资源 ${source} 不存在！`, extra)
-      const { name, owner, repo, prerelease, types } = sources[source]
-      if (typeof types === 'object' && !types.hasOwnProperty(type))
-        return reply(`类型 ${type} 不存在！`, extra)
+    if (!sources.hasOwnProperty(source))
+      return ctx.reply(`资源 ${source} 不存在！`, extra)
+    const { name, owner, repo, prerelease, types } = sources[source]
+    if (typeof types === 'object' && !types.hasOwnProperty(type))
+      return ctx.reply(`类型 ${type} 不存在！`, extra)
 
-      const { data: releases } = await listReleases({
-        owner,
-        repo,
-      })
-      const [{ assets, tag_name, published_at }] = releases
-        .filter((release) => !release.draft)
-        .filter((release) =>
-          prerelease || pre ? release.prerelease : !release.prerelease
-        )
-
-      const asset = assets.find((asset) =>
-        asset.browser_download_url.includes(
-          typeof types === 'string' ? types : types[type as Platform]!
-        )
+    const { data: releases } = await listReleases({
+      owner,
+      repo,
+    })
+    const [{ assets, tag_name, published_at }] = releases
+      .filter((release) => !release.draft)
+      .filter((release) =>
+        prerelease || pre ? release.prerelease : !release.prerelease
       )
 
-      if (!asset)
-        return reply(
-          `未在 https://github.com/${owner}/${repo}/releases/${tag_name} 版本中找到此类型文件！`,
-          {
-            ...extra,
-            disable_web_page_preview: true,
-          }
-        )
+    const asset = assets.find((asset) =>
+      asset.browser_download_url.includes(
+        typeof types === 'string' ? types : types[type as Platform]!
+      )
+    )
 
-      const github = asset.browser_download_url.replace(/_/g, '\\_')
-      const fastgit = github.replace('github.com', 'download.fastgit.org')
+    if (!asset)
+      return ctx.reply(
+        `未在 https://github.com/${owner}/${repo}/releases/${tag_name} 版本中找到此类型文件！`,
+        {
+          ...extra,
+          disable_web_page_preview: true,
+        }
+      )
 
-      replyWithMarkdownV2(
-        escape(outdent`
+    const github = asset.browser_download_url.replace(/_/g, '\\_')
+    const fastgit = github.replace('github.com', 'download.fastgit.org')
+
+    ctx.replyWithMarkdownV2(
+      escape(outdent`
           *${name}${
-          type ? ` ${platforms[type as Platform]}` : ''
-        }* (${tag_name}${prerelease || pre ? ' pre' : ''}) \`${dayjs(
-          published_at!
-        )
-          .utcOffset(8)
-          .format('YYYY-MM-DD HH:mm')}\`
+        type ? ` ${platforms[type as Platform]}` : ''
+      }* (${tag_name}${prerelease || pre ? ' pre' : ''}) \`${formatTime(
+        published_at!
+      )}\`
           · [GitHub](${github})
           · [FastGit](${fastgit})
         `),
-        extra
-      )
-    }
-  )
-}
+      extra
+    )
+  }
+)
