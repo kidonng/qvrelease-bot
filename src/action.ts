@@ -75,10 +75,10 @@ telegraf.hears(
         }
       )
 
-    const { id, name: artifactName, created_at } = artifact
+    const { name: artifactName, archive_download_url, created_at } = artifact
 
     got(
-      `https://api.github.com/repos/${owner}/${repo}/actions/artifacts/${id}/zip`,
+      archive_download_url,
       { headers: { Authorization: `token ${GH_TOKEN}` } }
     ).on('response', ({ redirectUrls: [link] }) => {
       ctx.replyWithMarkdownV2(
