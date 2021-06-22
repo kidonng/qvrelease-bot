@@ -81,7 +81,7 @@ telegraf.hears(
         published_at!
       )}\`
           · [GitHub](${github})
-          · [FastGit](${fastgit})
+          · [FastGit UK](${fastgit})
         `),
       extra
     )
